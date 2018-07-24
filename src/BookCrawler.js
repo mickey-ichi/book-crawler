@@ -16,22 +16,28 @@ class BookCrawler {
             const $ = cheerio.load(response.data);
             let linksBook = [];
             let categories = [];
-            let $books = $('article[class="product_pod"]', 'section');
-            $books.each((i, bookHtml) => {
+            let $booksEl = $('article[class="product_pod"]', 'section');
+            $booksEl.each((i, bookHtml) => {
                 let $book = cheerio.load(bookHtml);
                 linksBook.push(`${this.host}/catalogue/${$book('a', '.image_container').attr('href')}`)
             });
+            let $categoriesEl = $('ul li', '.nav-list');
+            $categoriesEl.each((i, category) => {
+                let $category = cheerio.load(category);
+                let name = $category('a').text().trim();
+                categories.push(name);
+            });
             return {linksBook, categories};
         });
-
         let booksPromise = [];
-
         response.linksBook.forEach(link => {
             booksPromise.push(this.crawBookDetail(link));
         });
-        let aad = await Promise.all(booksPromise);
-        console.log(aad);
-        return response;
+        let books = await Promise.all(booksPromise);
+        return {
+            books: books,
+            categories: response.categories,
+        };
     }
 
     /**
@@ -39,7 +45,7 @@ class BookCrawler {
      * @param link
      */
     crawBookDetail(link) {
-        axios.get(link).then(response => {
+        return axios.get(link).then(response => {
             const $ = cheerio.load(response.data);
             return {
                 name: $('h1', '.product_main').text(),

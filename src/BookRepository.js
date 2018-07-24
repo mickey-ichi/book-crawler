@@ -10,6 +10,14 @@ class BookRepository {
     getBooks() {
         //todo
     }
+
+    getBooksWithCategory() {
+        //todo
+    }
+
+    getCategories() {
+        //todo
+    }
 }
 
 module.exports = BookRepository;
