@@ -1,32 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET books listing. */
-router.get('/', (req, res, next) => {
-    req.bookRepository.getBooks().then(books => {
-        res.json(books);
-    });
-});
-
-/* POST add books */
+/* POST change all */
 router.post('/', async (req, res, next) => {
     const page = req.body.page;
     if (!page) {
         return next({
             status: 400,
-            message: 'page required'
+            message: 'page required',
+            api: true
         });
     }
 
     let raw = await req.bookCrawler.crawMagic(page);
-    let status = await req.bookRepository.changeAll(raw);
-
-    // console.log(status);
-
+    await req.bookCrawlerRepository.changeAll(raw);
     return res.json({
         status: 200,
         message: 'OK',
     });
+
+
 });
 
 module.exports = router;

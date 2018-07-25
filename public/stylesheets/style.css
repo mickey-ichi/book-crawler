@@ -1,8 +1,38 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.item-category {
+  color: #2185d0;
+  cursor: pointer;
+  padding: 5px;
+}
+
+
+.book-item {
+  text-align: center;
+  padding: 15px;
+}
+
+.book-item-img {
+  width: auto;
+  max-height: 160px;
+  display: inline-block;
+  padding: 4px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  max-width: 100%;
+}
+
+.book-name {
+  max-height: 1.6rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.6rem;
+}
+
+.book-rate-active {
+  color: #f1d833;
 }

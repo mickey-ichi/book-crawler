@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body style="background: black; color: #fff">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <style>
+        body > .ui.container {
+            margin-top: 3em;
+        }
+
+        .ui.container > h1 {
+            font-size: 3em;
+            text-align: center;
+            font-weight: normal;
+        }
+
+        .ui.container > h2.dividing.header {
+            font-size: 2em;
+            font-weight: normal;
+            margin: 3em 0em 2em;
+        }
+    </style>
+</head>
+<body>
+<div class="ui container">
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <h2 class="ui dividing header"><%= title %></h2>
+
+    <div class="ui two column stackable grid">
+        <div class="four wide column">
+            <div class="ui segment">
+                <% categories.forEach(function(category) { %>
+                <div class="item-category"><%= category.name %></div>
+                <% }); %>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui segment">
+               <div class="ui four column stackable grid">
+                   <% books.forEach(function(book) { %>
+                       <div class="column book-item">
+                           <div style="height: 170px;">
+                               <img class="book-item-img" src="<%= book.image_src %>" alt="" />
+                           </div>
+                           <div style="color: rgba(143,155,165,0.77); font-size: 13px; padding: 10px 0;">
+                               <% for(var i= 0; i < book.star; i++) { %>
+                               <i class="star icon book-rate-active" style="margin: 0"></i>
+                               <% } %>
+                               <% for(var i= 0; i < (5 - book.star); i++) { %>
+                               <i class="star icon" style="margin: 0"></i>
+                               <% } %>
+                           </div>
+                           <div class="book-name "><%= book.name %></div>
+                           <div style="color: #21ba45; padding-top: 15px;">
+                               £ <%= book.price %>
+                           </div>
+                       </div>
+                   <% }); %>
+                    </div>
+               </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+</body>
 </html>

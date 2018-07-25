@@ -8,7 +8,7 @@ class BookCrawler {
     }
 
     /**
-     * Page number
+     * Read data with page number
      * @param page
      */
     async crawMagic(page = 1) {

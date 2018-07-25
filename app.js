@@ -9,12 +9,11 @@ const bodyParser = require('body-parser');
 const config = require('./config');
 const db = require('./db');
 
-const BookRepository = require('./src/BookRepository');
+const BookCrawlerRepository = require('./src/BookCrawlerRepository');
 const BookCrawler = require('./src/BookCrawler');
 
 const indexRouter = require('./routes/index');
-const booksRouter = require('./routes/books');
-const categoriesRouter = require('./routes/categories');
+const bookCrawlerRouter = require('./routes/book-crawler');
 
 const app = express();
 
@@ -33,14 +32,13 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use((req, res, next) => {
-    req.bookRepository = new BookRepository(db);
+    req.bookCrawlerRepository = new BookCrawlerRepository(db);
     req.bookCrawler = new BookCrawler();
     next();
 });
 
 app.use('/', indexRouter);
-app.use('/api/books', booksRouter);
-app.use('/api/categories', categoriesRouter);
+app.use('/api/book-crawler', bookCrawlerRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -49,10 +47,19 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  res.status(err.status).json({
-      status: err.status,
-      message: err.message
-  });
+    res.locals.message = err.message;
+    res.locals.error = config.env === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    if(err.api){
+        return res.json({
+            status: err.status,
+            message: err.message,
+        });
+    }
+    return res.render('error');
+
 });
 
 module.exports = app;

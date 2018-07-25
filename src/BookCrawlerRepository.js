@@ -1,8 +1,13 @@
-class BookRepository {
+class BookCrawlerRepository {
     constructor(db) {
         this.db = db;
     }
 
+    /**
+     * UPDATE BOOKS
+     * @param books
+     * @returns {Promise}
+     */
     changeBooks(books = []) {
         let sql = `
             INSERT INTO books (name, upc_code, category, image_src, price, star, status) VALUES ?
@@ -26,6 +31,11 @@ class BookRepository {
         })
     }
 
+    /**
+     * UPDATE CATEGORIES
+     * @param categories
+     * @returns {Promise}
+     */
     changeCategories(categories = []) {
         let sql = `
             INSERT INTO categories (name, value) VALUES ?
@@ -47,6 +57,10 @@ class BookRepository {
         })
     }
 
+    /**
+     * GET ALL BOOK
+     * @returns {Promise}
+     */
     getBooks() {
         return new Promise((resolve, reject) => {
             this.db.query('SELECT * FROM books', function (error, results, fields) {
@@ -56,6 +70,10 @@ class BookRepository {
         });
     }
 
+    /**
+     * GET ALL CATEGORY
+     * @returns {Promise}
+     */
     getCategories() {
         return new Promise((resolve, reject) => {
             this.db.query('SELECT * FROM categories', function (error, results, fields) {
@@ -65,6 +83,10 @@ class BookRepository {
         });
     }
 
+    /**
+     * GET ALL BOOK AND CATEGORY
+     * @returns {Promise}
+     */
     async getAll() {
         let all = await Promise.all([this.getBooks(), this.getCategories()]);
         return {
@@ -73,9 +95,13 @@ class BookRepository {
         };
     }
 
+    /**
+     * UPDATE BOOKS AND CATEGORIES
+     * @returns {Promise}
+     */
     async changeAll(params) {
         return await Promise.all([this.changeBooks(params.books), this.changeCategories(params.categories)]);
     }
 }
 
-module.exports = BookRepository;
+module.exports = BookCrawlerRepository;

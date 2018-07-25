@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
 /* GET home page. */
 router.get('/', async (req, res, next) => {
-    req.bookRepository.getAll().then(({books, categories}) => {
-        res.render('index', {books: books, categories: categories});
-    });
+
+    let {books, categories} = await req.bookCrawlerRepository.getAll();
+
+    res.render('index', {title: 'Book Crawler', books, categories});
 });
 
 module.exports = router;
