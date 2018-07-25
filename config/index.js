@@ -6,5 +6,5 @@ module.exports = {
     mysqlPort: process.env['MYSQL_PORT'] || 3307,
     mysqlUser: process.env['MYSQL_USER'] || 'crawler',
     mysqlPassword: process.env['MYSQL_PASSWORD'] || 'crawler',
-    mysqlDatabase: process.env['MYSQL_DATABASE'] ||"crawler"
+    mysqlDatabase: process.env['MYSQL_DATABASE'] || 'crawler'
 };
