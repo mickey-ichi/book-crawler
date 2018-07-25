@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+
+  web:
+      build: .
+      ports:
+          - "3000:8000"
+      working_dir: /usr/src/app
+      environment:
+          - HOST=http://books.toscrape.com/
+          - PATH=catalogue
+          - PORT=8000
+      volumes:
+          - .:/usr/src/app
+          - /usr/src/app/node_modules
+      command: "npm start"
+      links:
+        - database
+
+  database:
+      image: "mysql:5.7"
+      ports:
+        - 3307:3306
+      environment:
+        MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+        MYSQL_ROOT_PASSWORD: "crawler"
+        MYSQL_DATABASE: "crawler"
+        MYSQL_USER: "crawler"
+        MYSQL_PASSWORD: "crawler"
