@@ -25,7 +25,11 @@ class BookCrawler {
             $categoriesEl.each((i, category) => {
                 let $category = cheerio.load(category);
                 let name = $category('a').text().trim();
-                categories.push(name);
+                let value = $category('a').attr('href').replace('/index.html', '').split('/').pop();
+                categories.push({
+                    name: name,
+                    value: value
+                });
             });
             return {linksBook, categories};
         });
@@ -49,6 +53,7 @@ class BookCrawler {
             const $ = cheerio.load(response.data);
             return {
                 name: $('h1', '.product_main').text(),
+                upc_code: $('td', '.table-striped').first().text(),
                 category: $('li[class="active"]', '.breadcrumb').prev().text().trim(),
                 image_src: `${this.host}/${$('img', '.active').attr('src').replace('../../', '')}`,
                 price: parseFloat($('p[class="price_color"]').text().replace('£', '')),
