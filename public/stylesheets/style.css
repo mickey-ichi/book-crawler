@@ -33,6 +33,18 @@ body {
   line-height: 1.6rem;
 }
 
+.craw-active {
+  display: block !important;
+}
+
+.craw-message {
+  display: none;
+}
+
 .book-rate-active {
   color: #f1d833;
+}
+
+.loading-margin-right {
+  margin-right: 5px !important;
 }

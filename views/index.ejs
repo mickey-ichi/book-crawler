@@ -19,14 +19,30 @@
         .ui.container > h2.dividing.header {
             font-size: 2em;
             font-weight: normal;
-            margin: 3em 0em 2em;
+            margin: 0 0 2em;
         }
     </style>
 </head>
 <body>
 <div class="ui container">
     <h1><%= title %></h1>
-    <h2 class="ui dividing header"><%= title %></h2>
+    <div style="max-width: 500px; min-height: 220px; padding-top: 50px; margin: 0 auto">
+        <div class="ui fluid action input">
+            <input type="number" id="inputCraw" placeholder="Please enter page number">
+            <button id="btnCraw" class="ui button">
+                <i class="cloud download icon"></i>Craw
+            </button>
+        </div>
+        <div id="crawError" class="ui negative message craw-message">
+            <i class="close icon"></i>
+            <div>Page number required.</div>
+        </div>
+        <div id="crawSuccess" class="ui success message craw-message">
+            <i class="close icon"></i>
+            <div>Craw success.</div>
+        </div>
+    </div>
+    <h2 class="ui dividing header">All products</h2>
 
     <div class="ui two column stackable grid">
         <div class="four wide column">
@@ -38,33 +54,97 @@
         </div>
         <div class="twelve wide column">
             <div class="ui segment">
-               <div class="ui four column stackable grid">
-                   <% books.forEach(function(book) { %>
-                       <div class="column book-item">
-                           <div style="height: 170px;">
-                               <img class="book-item-img" src="<%= book.image_src %>" alt="" />
-                           </div>
-                           <div style="color: rgba(143,155,165,0.77); font-size: 13px; padding: 10px 0;">
-                               <% for(var i= 0; i < book.star; i++) { %>
-                               <i class="star icon book-rate-active" style="margin: 0"></i>
-                               <% } %>
-                               <% for(var i= 0; i < (5 - book.star); i++) { %>
-                               <i class="star icon" style="margin: 0"></i>
-                               <% } %>
-                           </div>
-                           <div class="book-name "><%= book.name %></div>
-                           <div style="color: #21ba45; padding-top: 15px;">
-                               £ <%= book.price %>
-                           </div>
-                       </div>
-                   <% }); %>
+                <div class="ui four column stackable grid" style="padding-top: 15px; padding-bottom: 15px;">
+                    <% books.forEach(function(book) { %>
+                    <div class="column book-item">
+                        <div style="height: 170px;">
+                            <img class="book-item-img" src="<%= book.image_src %>" alt=""/>
+                        </div>
+                        <div style="color: rgba(143,155,165,0.77); font-size: 13px; padding: 10px 0;">
+                            <% for(var i = 0; i < book.star; i++) { %>
+                            <i class="star icon book-rate-active" style="margin: 0"></i>
+                            <% } %>
+                            <% for(var i = 0; i < (5 - book.star); i++) { %>
+                            <i class="star icon" style="margin: 0"></i>
+                            <% } %>
+                        </div>
+                        <div class="book-name "><%= book.name %></div>
+                        <div style="color: #21ba45; padding-top: 15px;">
+                            £ <%= book.price %>
+                        </div>
+                        <div style="padding-top: 15px;">
+                            <% if(book.status){ %>
+                            <div style="color: #21ba45;">
+                                <i class="check icon"></i>In stock
+                            </div>
+                            <% } else{ %>
+                            <div style="color: #db2828;">
+                                <i class="meh outline icon"></i>Out stock
+                            </div>
+                            <% } %>
+                        </div>
                     </div>
-               </div>
+                    <% }); %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+<script>
+    $( document ).ready(function() {
+
+        var $btnCraw = $('#btnCraw');
+        var $inputCraw = $('#inputCraw');
+        var $icon = $('#btnCraw i');
+        var $crawError = $('#crawError');
+        var $crawSuccess = $('#crawSuccess');
+
+        $('.message .close')
+            .on('click', function() {
+                $(this)
+                    .closest('.message')
+                    .transition('fade')
+                ;
+            })
+        ;
+
+        $btnCraw.on('click', function () {
+            $crawError.removeClass('craw-active');
+            $crawError.removeClass('transition');
+            $crawError.removeClass('hidden');
+            $crawSuccess.removeClass('craw-active');
+            $crawSuccess.removeClass('transition');
+            $crawSuccess.removeClass('hidden');
+
+            var page = $inputCraw.val();
+            console.log(page);
+            if(!page) {
+                $crawError.addClass('craw-active');
+                return;
+            }
+
+            $icon.attr("class", "ui active tiny inline loader loading-margin-right")
+
+            var request = $.ajax({
+                url: "/api/book-crawler",
+                method: "POST",
+                data: { page : page },
+                dataType: "html"
+            });
+
+            request.done(function( msg ) {
+                $icon.attr("class", "cloud download icon");
+                $crawSuccess.addClass('craw-active');
+            });
+
+            request.fail(function( jqXHR, textStatus ) {
+            });
+        });
+    });
+
+</script>
 </body>
 </html>
