@@ -44,6 +44,6 @@
 
 ## Example
 <p align='center'>
-<img src='https://drive.google.com/file/d/1sir5-COvd2doCLFQ4hchLHJnS39-JJE-/view?usp=sharing' width='600' alt='npm start'>
+<img src='https://i.imgur.com/TTBhNkT.jpg' width='1000' alt='npm start'>
 </p>
 
