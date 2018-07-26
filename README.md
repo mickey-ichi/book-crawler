@@ -12,7 +12,7 @@
 
 1. Change directory in to the project:
 
-        cd nodejs-docs-samples
+        cd book-crawler
 
 1. Setup environment variable:
    
