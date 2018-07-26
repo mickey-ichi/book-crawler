@@ -26,7 +26,8 @@
 
 [node]: https://nodejs.org/
 [mysql]: https://dev.mysql.com/downloads/mysql/
-##How to run
+
+## How to run
 1. Install dependencies 
 
         npm install
@@ -41,6 +42,8 @@
 
         npm start
 
-
-`
+## Example
+<p align='center'>
+<img src='https://drive.google.com/file/d/1sir5-COvd2doCLFQ4hchLHJnS39-JJE-/view?usp=sharing' width='600' alt='npm start'>
+</p>
 
