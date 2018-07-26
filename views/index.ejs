@@ -39,20 +39,23 @@
         </div>
         <div id="crawSuccess" class="ui success message craw-message">
             <i class="close icon"></i>
-            <div>Craw success.</div>
+            <div>Craw success please refresh page.</div>
         </div>
     </div>
     <h2 class="ui dividing header">All products</h2>
 
     <div class="ui two column stackable grid">
         <div class="four wide column">
+            <% if(categories.length > 0){ %>
             <div class="ui segment">
                 <% categories.forEach(function(category) { %>
                 <div class="item-category"><%= category.name %></div>
                 <% }); %>
             </div>
+            <% } %>
         </div>
         <div class="twelve wide column">
+            <% if(books.length > 0){ %>
             <div class="ui segment">
                 <div class="ui four column stackable grid" style="padding-top: 15px; padding-bottom: 15px;">
                     <% books.forEach(function(book) { %>
@@ -88,11 +91,13 @@
                 </div>
             </div>
         </div>
+            <% } %>
+        </div>
     </div>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 <script>
     $( document ).ready(function() {
 

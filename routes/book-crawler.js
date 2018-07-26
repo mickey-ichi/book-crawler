@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+router.get('/', async (req, res, next) => {
+
+    let {books, categories} = await req.bookCrawlerRepository.getAll();
+
+    res.json({books, categories});
+});
+
 /* POST change all */
 router.post('/', async (req, res, next) => {
     const page = req.body.page;
@@ -18,8 +25,6 @@ router.post('/', async (req, res, next) => {
         status: 200,
         message: 'OK',
     });
-
-
 });
 
 module.exports = router;

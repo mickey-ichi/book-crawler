@@ -54,7 +54,7 @@ class BookCrawler {
             return {
                 name: $('h1', '.product_main').text(),
                 upc_code: $('td', '.table-striped').first().text(),
-                category: $('li[class="active"]', '.breadcrumb').prev().text().trim(),
+                category: $('li[class="active"]', '.breadcrumb').prev().find('a').attr('href').replace('/index.html', '').split('/').pop(),
                 image_src: `${this.host}/${$('img', '.active').attr('src').replace('../../', '')}`,
                 price: parseFloat($('p[class="price_color"]').text().replace('£', '')),
                 star: BookCrawler.convertStar($('.star-rating').attr('class').replace('star-rating ', '')),
